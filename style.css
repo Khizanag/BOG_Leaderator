@@ -4,83 +4,93 @@
 	box-sizing: border-box;
 }
 
-.menu-section {
-	width: 100%;
-	height: 110px;
-	background-color: #660000;
+.container{
+	width: 960px;
+	margin: auto;
 }
 
-.logo{
-	width: 185px;
-	height: 35px;
-	text-align: center;
-	color: white;
-	background-color: green;
+.header-section{
+	width: 100%;
+	border-top: 5px solid #76c38f;
+	background-color: #290000;
 }
 
-.menu-container{
-	width: 100%;
+.header {
 	height: 100px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	justify-content: space-around;
+}
+
+.logo{
+	width: 225;
+	height: 35px;
+	text-align: center;
+	color: white;
+}
+
+.logo-description{
+	color: #979797;
 }
 
 .menu-bar{
-	width: 800px;
+	width: 630px;
 	height: 35px;
 	display: flex;
-	flex-direction: row;
+
 	align-items: center;
 	justify-content: space-between;
 }
 
 .menu-item{
 	width: 78px;
-	height: 35px;
+	font-size: 12px;
 	text-align: center;
 	color: white;
-	background-color: green;
 }
 
-.article-section{
+.eye-catcher-section{
 	width: 100%;
 	height: 500px;
 	background-color: #660000;
 }
 
-.article-container{
+.eye-catcher-container{
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
 }
 
-.article-texts-container{
+.eye-catcher-texts{
 	width: 400px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 }
 
-.article-header{
+.eye-catcher-header{
 	color: white;
 }
 
-.article-description{
+.eye-catcher-description{
 	color: #929292;
 }
 
-.article-more{
+/* Done */
+.eye-catcher-more-button{
 	width: 142px;
 	height: 35px;
-	text-align: center;
-	background-color: green;
+	border-radius: 10px;
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	color: white;
+	background-color: #76c38f;
 }
 
-.article-image{
+.eye-catcher-image{
 	width: 380px;
 	height: 380px;
 	border: 20px;
@@ -134,18 +144,14 @@
 }
 
 .latest-work-section{
+	width: 100%;
+	height: 430px;
 	background-color: red; 
 }
 
-.latest-work-container{
-	width: 100%;
-	height: 542px;
-	/*margin: auto; */
+.latest-work-items{
 	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	align-items: center;
+	justify-content: space-between;
 }
 
 .latest-work-item{
@@ -163,7 +169,6 @@
 	width: 100%;
 	height: 160px;
 	text-align: center;
-
 }
 
 .latest-work-text-item{
@@ -212,5 +217,20 @@
 }
 
 .footer-text{
+	color: white;
+}
+
+
+.latest-work-line{
+	width: 100%;
+	height: 3px;
+	background-color: #353535;
+}
+
+.latest-work-title{
+	width: 256px;
+	height: 48px;
+	justify-content: center;
+	font-size: 20px;
 	color: white;
 }
