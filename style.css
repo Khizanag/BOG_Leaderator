@@ -50,13 +50,35 @@
 	color: white;
 }
 
+.chosen-menu-item{
+	width: 78px;
+	height: 35px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #76c38f;
+}
+
+.menu-item:hover {
+	width: 78px;
+	height: 35px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	transition: 0.5s;
+	background-color: #76c38f;
+}
+
 .eye-catcher-section{
 	width: 100%;
-	height: 500px;
 	background-color: #290000;
 }
 
 .eye-catcher-container{
+	height: 500px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -98,7 +120,7 @@
 }
 
 /* Done */
-.eye-catcher-more-button{
+.green-button{
 	width: 142px;
 	height: 35px;
 	border-radius: 10px;
@@ -173,6 +195,25 @@
 	color: #929292;
 }
 
+.service-item:hover{
+	background-color: #76c38f;
+	transition: 0.5s;
+}
+
+.service-item:hover .service-item-image{
+	background-color: white;
+	color: black;
+	transition: 0.5s;
+}
+
+.service-item:hover .service-item-title{
+	color: white;
+}
+
+.service-item:hover .service-item-text{
+	color: white;
+}
+
 /*-- End of section		-> Service --*/
 /*-- Start of section	-> Latest work --*/
 
@@ -215,6 +256,8 @@
 	width: 290px;
 	height: 190px;
 
+	position: relative;
+
 	border-bottom: 5px;
 	border-style: solid;
 	border-color: white;
@@ -224,22 +267,25 @@
 	justify-content: center;
 	align-items: center;
 
+	transition: 0.5s;
+	overflow: hidden;
+
 	color: white;
 	background-color: #353535;
 }
 
-.latest-work-upper-item{
-	width: 100%;
-	height: 160px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	text-align: center;
+
+.latest-work-item:hover .latest-work-text-item{
+	bottom: -50px;
+	transition: 0.5s;
 }
 
 .latest-work-text-item{
 	width: 100%;
 	height: 30px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -259,7 +305,6 @@
 .info-items{
 	width: 100%;
 	height: 100%;/* ???? */
-	padding: 10px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -271,15 +316,41 @@
 	padding: 10px;
 	display: flex;
 	flex-direction:	column;
-	justify-content: space-between;
+	
 	/* color: #6b6b6b; */
 }
 
 .infoes-title{
-	top:	40px;
+	top: 31px;
 	position: relative;
 	font-size: large;
 	color:	white;
+}
+
+.infoes-texts{
+	top: 76px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.personal-box{
+	margin-bottom: 10px;
+    width: 225px;
+    height: 35px;
+    border-radius: 20px;
+    padding-left: 10px;
+    background-color: #222222;
+    color: white;
+}
+
+.message-box-height{
+	height: 80px;
+}
+
+.submit-button-width{
+	width: 75px;
 }
 
 .infoes-marked-text{
