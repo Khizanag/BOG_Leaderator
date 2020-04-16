@@ -16,7 +16,7 @@
 }
 
 .header {
-	height: 100px;
+	height: 80px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -78,7 +78,7 @@
 }
 
 .eye-catcher-container{
-	height: 500px;
+	height: 520px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -97,6 +97,7 @@
 }
 
 .slider-item{
+	width: 840px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
