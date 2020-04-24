@@ -8,73 +8,58 @@
 <body>
     <p>Search any keybord and filter commits using it</p>
     <input type="text" id="input">
-    <button onclick=filterCommits()>
-        <- Search in commits</button>
+    <button onclick=filterCommits()> <- Search in commits</button>
 
-            <script>
-                class PullerAndFilter {
-                    constructor(url, filterText) {
-                        this.url = url;
-                        this.filterText = filterText;
+    <script>
+        class PullerAndFilter {
+            constructor(url, filterText) {
+                this.url = url;
+                this.filterText = filterText;
 
-                        this.messages = this.getMessagesLoad();
-                    }
+                this.messages = this._getMessagesLoad();
+            }
 
-                    async  getMessagesLoad() {
-                        let response = await fetch(this.url);
-                        let commits = await response.json();
-                        let filteredCommits = commits.filter(elem => elem.commit.message.includes(this.filterText));
-                        let result = [];
+            async  _getMessagesLoad() {
+                const response = await fetch(this.url);
+                const commits = await response.json();
+                const filteredCommits = commits.filter(elem => elem.commit.message.includes(this.filterText));
+                let result = [];
 
-                        for (let i in filteredCommits) {
-                            let filteredCommit = filteredCommits[i];
-                            result.push(filteredCommit.commit.message);
-                        }
-                        return result;
-                    }
-
-                    getMessages() {
-                        return this.messages;
-                    }
-
+                for (let i in filteredCommits) {
+                    const filteredCommit = filteredCommits[i];
+                    result.push(filteredCommit.commit.message);
                 }
+                return result;
+            }
 
-                class Display {
-                    static showMessages(messages) {
-                        let mainDiv = document.createElement('div');
-                        mainDiv.className = "output";
-                        document.body.append(mainDiv);
+            getMessages() {
+                return this.messages;
+            }
 
-                        messages.then(function (val) {
-                            for (let i = 0; i < val.length; i++) {
-                                document.getElementsByClassName("output")[0].innerHTML += val[i] + '<br>';
-                            }
-                        });
-                    }
+        }
+
+        class Display {
+            static showMessages(messages) {
+                let mainDiv = document.createElement('div');
+                mainDiv.id = "output";
+                document.body.append(mainDiv);
+
+                for (let i = 0; i < messages.length; i++) {
+                    document.getElementById("output").innerHTML += messages[i] + '<br>';
                 }
+            }
+        }
 
-                function showMessages(messages) {
-                    let mainDiv = document.createElement('div');
-                    mainDiv.className = "output";
-                    document.body.append(mainDiv);
+        function filterCommits() {
+            const url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
+            const filterTextElem = document.getElementById("input");
+            const filterText = filterTextElem.value;
+            const pullerAndFilter = new PullerAndFilter(url, filterText);
+            const messagesPromise = pullerAndFilter.getMessages();
+            messagesPromise.then(function(messages){ Display.showMessages(messages)});
+        }
 
-                    messages.then(function (val) {
-                        for (let i = 0; i < val.length; i++) {
-                            document.getElementsByClassName("output")[0].innerHTML += val[i] + '<br>';
-                        }
-                    });
-                }
-
-                function filterCommits() {
-                    let url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
-                    let filterTextElem = document.getElementById("input");
-                    let filterText = filterTextElem.value;
-                    let pullerAndFilter = new PullerAndFilter(url, filterText);
-                    let messages = pullerAndFilter.getMessages();
-                    Display.showMessages(messages);
-                }
-
-            </script>
+    </script>
 </body>
 
 </html>
