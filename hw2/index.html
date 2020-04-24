@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>HW2</title>
+    <title>Commit's Messages Filter</title>
 </head>
 
 <body>
@@ -10,19 +10,19 @@
     <input type="text" id="input">
     <button onclick=filterCommits()> <- Search in commits</button>
 
-    <div id="output"></div>
-
     <script>
         class PullerAndFilter {
             constructor(url, filterText) {
                 this.url = url;
-                this.filterText = filterText
+                this.filterText = filterText;
+
+                this.messages = this.getMessagesLoad();
             }
 
-            async  getMessages() {
+            async  getMessagesLoad() {
                 let response = await fetch(this.url);
                 let commits = await response.json();
-                let filteredCommits = commits.filter(x => x.commit.message.includes(this.filterText));
+                let filteredCommits = commits.filter(elem => elem.commit.message.includes(this.filterText));
                 let result = [];
 
                 for (let i in filteredCommits) {
@@ -32,17 +32,22 @@
                 return result;
             }
 
-            showMessages(messages) {
-                messages.then(function (val) {
-                    for (let i = 0; i < val.length; i++) {
-                        let elem = document.createElement('div');
-                        elem.className = "msg";
-                        elem.innerHTML = val[i];
-                        document.getElementById("output").append(elem);
-                    }
-                });
+            getMessages(){
+                return this.messages;
             }
 
+        }
+
+        function showMessages(messages) {
+            let mainDiv = document.createElement('div');
+            mainDiv.className = "output";
+            document.body.append(mainDiv);
+
+            messages.then(function (val) {
+                for (let i = 0; i < val.length; i++) {
+                    document.getElementsByClassName("output")[0].innerHTML += val[i] + '<br>';
+                }
+            });
         }
 
         function filterCommits() {
@@ -51,7 +56,7 @@
             let filterText = filterTextElem.value;
             let pullerAndFilter = new PullerAndFilter(url, filterText);
             let messages = pullerAndFilter.getMessages();
-            pullerAndFilter.showMessages(messages);
+            showMessages(messages);
         }
 
     </script>
