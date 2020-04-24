@@ -44,24 +44,10 @@
                 mainDiv.className = "output";
                 document.body.append(mainDiv);
 
-                messages.then(function (val) {
-                    for (let i = 0; i < val.length; i++) {
-                        document.getElementsByClassName("output")[0].innerHTML += val[i] + '<br>';
-                    }
-                });
-            }
-        }
-
-        function showMessages(messages) {
-            let mainDiv = document.createElement('div');
-            mainDiv.className = "output";
-            document.body.append(mainDiv);
-
-            messages.then(function (val) {
-                for (let i = 0; i < val.length; i++) {
-                    document.getElementsByClassName("output")[0].innerHTML += val[i] + '<br>';
+                for (let i in messages) {
+                    document.getElementsByClassName("output")[0].innerHTML += messages[i] + '<br>';
                 }
-            });
+            }
         }
 
         function filterCommits() {
