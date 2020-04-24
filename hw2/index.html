@@ -38,6 +38,20 @@
 
         }
 
+        class Display {
+            static showMessages(messages) {
+                let mainDiv = document.createElement('div');
+                mainDiv.className = "output";
+                document.body.append(mainDiv);
+
+                messages.then(function (val) {
+                    for (let i = 0; i < val.length; i++) {
+                        document.getElementsByClassName("output")[0].innerHTML += val[i] + '<br>';
+                    }
+                });
+            }
+        }
+
         function showMessages(messages) {
             let mainDiv = document.createElement('div');
             mainDiv.className = "output";
@@ -56,7 +70,7 @@
             let filterText = filterTextElem.value;
             let pullerAndFilter = new PullerAndFilter(url, filterText);
             let messages = pullerAndFilter.getMessages();
-            showMessages(messages);
+            Display.showMessages(messages);
         }
 
     </script>
