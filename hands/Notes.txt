@@ -1,0 +1,36 @@
+-------------------------------------------------- Classes --------------------------------------------------
+
+delete obj.key; -> წაშლის obj-ში არსებულ key-სs
+
+ობიექტის დაკლონვა:
+
+let cloneName = Object.assign({}, objToClone);
+
+-> .getElementByClassName()
+-> .getElementById();
+
+-> .querySelectorAll
+
+-> .closest(.rame) უახლოესი მშობელი ელემენტი
+
+-> .previousSibling
+-> .nextSibling
+
+
+
+-> elem.classList.add/remove(className);
+-> elem.toggle(className); // თუ აქვს წაუშლის თუ არა დაამატებს
+-> elem.classList.contains()
+
+-> let computedStyle = getComputedStyle(elem); // და შემდეგ მაგალითად .color-ით შეგვიძლია წვდომა
+
+-> let cloned = cloneNode(old);
+
+
+
+
+
+
+
+-------------------------------------------------- Events --------------------------------------------------
+

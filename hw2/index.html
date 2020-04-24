@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>HW2</title>
+</head>
+
+<body>
+    <p>Search any keybord and filter commits using it</p>
+    <input type="text" id="input">
+    <button onclick=filterCommits()> <- Search in commits</button>
+
+    <div id="output"></div>
+
+    <script>
+        class PullerAndFilter {
+            constructor(url, filterText) {
+                this.url = url;
+                this.filterText = filterText
+            }
+
+            async  getMessages() {
+                let response = await fetch(this.url);
+                let commits = await response.json();
+                let filteredCommits = commits.filter(x => x.commit.message.includes(this.filterText));
+                let result = [];
+
+                for (let i in filteredCommits) {
+                    let filteredCommit = filteredCommits[i];
+                    result.push(filteredCommit.commit.message);
+                }
+                return result;
+            }
+
+            showMessages(messages) {
+                messages.then(function (val) {
+                    for (let i = 0; i < val.length; i++) {
+                        let elem = document.createElement('div');
+                        elem.className = "msg";
+                        elem.innerHTML = val[i];
+                        document.getElementById("output").append(elem);
+                    }
+                });
+            }
+
+        }
+
+        function filterCommits() {
+            let url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
+            let filterTextElem = document.getElementById("input");
+            let filterText = filterTextElem.value;
+            let pullerAndFilter = new PullerAndFilter(url, filterText);
+            let messages = pullerAndFilter.getMessages();
+            pullerAndFilter.showMessages(messages);
+        }
+
+    </script>
+</body>
+
+</html>
