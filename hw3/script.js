@@ -1,1 +1,2 @@
-alert("wooow");
+import configPackage from "./config.js";
+
