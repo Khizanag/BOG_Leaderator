@@ -8,9 +8,34 @@
 }
 
 .container {
-    width: 100%;
+    width: 95%;
     height: 100%;
     margin: auto;
+}
+
+/* Top part of site: search items */
+
+h1{
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: inherit;
+
+    font-size: 2.5rem;
+}
+
+.search-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.search-items{
+    display: flex;
+    flex-direction: row;
 }
 
 /* second part of site: searched gifs */
@@ -19,7 +44,6 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    /* align-items: center; */
 }
 
 .giphy-item{

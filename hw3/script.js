@@ -9,7 +9,7 @@ class GiphyManager{
 	constructor(){
 		this._loadDefaultLabels();
 
-		this.doSearch("Space");
+		// this.doSearch("Space");
 	}
 
 	async doSearch(toSearch){
@@ -49,6 +49,7 @@ class GiphyPuller {
 class GiphyDisplayer{
 	static displayGifs(pulledData){
 		const giphyItemsElem = document.getElementsByClassName("giphy-items")[0];
+		giphyItemsElem.innerHTML = '';
 		pulledData.map((element) => { // TODO
 			this.displayGif(giphyItemsElem, element);
 		});
@@ -92,7 +93,8 @@ const manager = new GiphyManager();
 
 search_button.onclick = () => {
 	const toSearch = search_text_field.value;
-	manager.doSearch(toSearch);
+	if(toSearch != '')
+		manager.doSearch(toSearch);
 };
 
 trending_button.onclick = () => {
