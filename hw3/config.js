@@ -1,3 +1,7 @@
+/**
+ * package that is used to the whole 'Giphy' project.
+ * collects all constant values.
+ */
 const configPackage = {
 	url: 'https://api.giphy.com/v1/gifs/search?',
 	trendingUrl: 'https://api.giphy.com/v1/gifs/trending?',
