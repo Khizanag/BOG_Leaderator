@@ -16,14 +16,14 @@
 /* Top part of site: search items */
 
 .search-section{
-    height: 150px;
+    height: 170px;
     background-color: white;
 
     border-bottom: 1px solid #bbbaba;
 }
 
 h1{
-    margin-top: 0;
+    margin-top: 10px;
     margin-bottom: 0.5rem;
 
     margin-bottom: 0.5rem;
@@ -61,10 +61,15 @@ h1{
     padding: 5px;
 
     font-size: 14px;
+    background-color: #bbbaba;
 
     border: solid;
     border-style: none;
     border-radius: 4px;
+}
+
+.btn:active{
+    color: white;
 }
 
 .saved-labels-button{
