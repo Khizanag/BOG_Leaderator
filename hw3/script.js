@@ -7,26 +7,45 @@ import configPackage from "./config.js";
  */
 class GiphyManager{
 	constructor(){
-		this._loadDefaultLabels();
-
-		// this.doSearch("Space");
+		GiphyManager._loadDefaultLabels();
+		GiphyManager.manageSavedLabelsDisplay();
 	}
 
-	async doSearch(toSearch){
-		this._manageSearchDraw(toSearch);
+	static async doSearch(toSearch){
+		GiphyManager._manageSearchDraw(toSearch);
+		GiphyManager._saveLabel(toSearch);
 	}
 
 	/* Private methods of GiphyManager class */
-	_loadDefaultLabels(){
+	static _loadDefaultLabels(){
 		for(const index in configPackage.defaultLabels){
 			const label = configPackage.defaultLabels[index];
 			LocalStorage.saveLabel(label);
 		}
 	}
 
-	async _manageSearchDraw(toSearch){
+	static async _manageSearchDraw(toSearch){
 		const pulledData = await GiphyPuller.pullData(toSearch);
 		GiphyDisplayer.displayGifs(pulledData);
+	}
+
+	static manageSavedLabelsDisplay(){
+		const savedLabels = JSON.parse(localStorage.getItem(configPackage.defaultLabelsName));
+		if(savedLabels == null)
+			return; // TODO
+		searched_items.innerHTML = '';
+		savedLabels.map( (elem) => {
+			GiphyDisplayer.addSavedLabel(elem);
+		});
+	}
+
+	static _saveLabel(elem){
+		const labels = JSON.parse(localStorage.getItem(configPackage.defaultLabelsName));
+		if(!labels.includes(elem)){
+			LocalStorage.saveLabel(elem);
+		}
+
+		GiphyManager.manageSavedLabelsDisplay();
 	}
 }
 
@@ -62,6 +81,42 @@ class GiphyDisplayer{
 										</div>`;
 	}
 
+	static addSavedLabel(elem){
+		let savedLabelItem = document.createElement('div');
+		savedLabelItem.className = 'saved-label-item';
+		let searchedLabel = GiphyDisplayer.getNewLabel(elem);
+		let x = GiphyDisplayer.getXButton();
+
+		searched_items.append(savedLabelItem);
+		savedLabelItem.append(searchedLabel);
+		savedLabelItem.append(x);
+	}
+
+	static getNewLabel(elem){
+		let searchedLabel = document.createElement('input');
+		searchedLabel.type = 'button';
+		searchedLabel.className = 'btn saved-labels-button';
+		searchedLabel.value = elem;
+		searchedLabel.addEventListener('click', function () {
+			GiphyManager.doSearch(this.value);
+		});
+		return searchedLabel;
+	}
+
+	static getXButton(){
+		let x = document.createElement('input');
+		x.type = 'button';
+		x.className = 'x';
+		x.value = '✘';
+		x.addEventListener('click', function () {
+			console.log(this.value);
+			const label = this.parentElement.children[0].value;
+			LocalStorage.removeLabel(label);
+			GiphyManager.manageSavedLabelsDisplay();
+		});
+		return x;
+	}
+
 }
 
 class LocalStorage{
@@ -94,9 +149,9 @@ const manager = new GiphyManager();
 search_button.onclick = () => {
 	const toSearch = search_text_field.value;
 	if(toSearch != '')
-		manager.doSearch(toSearch);
+		GiphyManager.doSearch(toSearch);
 };
 
 trending_button.onclick = () => {
-	manager.doSearch('');
+	GiphyManager.doSearch('');
 };
