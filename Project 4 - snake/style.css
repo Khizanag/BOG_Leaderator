@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial,
+        Helvetica,
+        sans-serif;
+}
+
+.container {
+    width: 95%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-section{
+    width: 100%;
+    height: 960px;
+    background-color: #375;
+}
+
+.canvas{
+    width: 500px;
+    height: 500px;
+    display: block;
+    /* margin: 5px auto; */
+    border: 10px solid #657;
+    background: white;
+}
