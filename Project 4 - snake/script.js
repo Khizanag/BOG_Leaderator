@@ -18,12 +18,6 @@ class SnakeGame {
 			&& Math.abs(key - this.dirKey) != 2);
 	}
 
-	// _initCanvas(){
-	//     let canvas = document.createElement('div');
-	//     canvas.className = 'canvas';
-	//     canvas.wid
-	// }
-
 	play(){
 		this._playNewGame();
 	}
@@ -113,10 +107,10 @@ class SnakeGame {
 		let tail = this.body.pop();
 		// console.log(typeof(tail));
 		let topOffset = head.offsetTop;
-		topOffset += dPair[0] == 0 ? 0 : configPackage.nodeLen+1;
+		topOffset += dPair[0] == 0 ? 0 : dPair[0]*(configPackage.nodeLen+1);
 
 		let leftOffset = head.offsetLeft;
-		leftOffset += dPair[1] == 0 ? 0 : configPackage.nodeLen+1;
+		leftOffset += dPair[1] == 0 ? 0 : dPair[1]*(configPackage.nodeLen+1);
 		// console.log("yOff: " + yOffset);
 
 		tail.style.top = topOffset + 'px';
@@ -181,15 +175,16 @@ class SnakeGame {
 	 * @returns difference bewteen first and possible new node's coordinates
 	 */
 	_getDiffPair(){
+		console.log("%%%%%_____this.diKey: "+this.dirKey);
 		switch (this.dirKey) {
 			case configPackage.leftKey	: return [0, -1];
-			case configPackage.topKey 	: return [-1, 0];
+			case configPackage.upKey 	: return [-1, 0];
 			case configPackage.rightKey	: return [0, 1];
 			case configPackage.downKey	: return [1, 0];
 
 			default :
 				console.log("Error occured in getDiffPair -> wrong direction");
-				return null; // TODO წესით არაა საჭირო
+				return []; // TODO წესით არაა საჭირო
 		}
 	}
 
