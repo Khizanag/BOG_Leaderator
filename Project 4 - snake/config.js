@@ -10,7 +10,7 @@ const config = {
     nodeLen: 20,
     numNodesInHeight: 25,
     numNodesInWidth: 25,
-    defaultInterval: 300,
+    defaultInterval: 100,
     SCORE_STEP: 10,
     numDefaultNodes: 5
 };

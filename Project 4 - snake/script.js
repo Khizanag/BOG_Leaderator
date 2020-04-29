@@ -71,19 +71,16 @@ class SnakeGame {
 	}
 
 	_createFood(){
+		let isFirstGame = false;
 		if(this.food == undefined){
+			isFirstGame = true;
 			this._createFoodElement();
 		}
 		
-		const foodCoords = this._getNewFoodCoordinates();
+		this._dropFood();
 
-		const top = foodCoords[0] * (1+configPackage.nodeLen);
-		this.food.style.top = top +'px';
-
-		const left = foodCoords[1] * (1+configPackage.nodeLen);
-		this.food.style.left = left+'px';
-
-		snake_canvas.append(this.food);
+		if(isFirstGame)
+			snake_canvas.append(this.food);
 	}
 
 	_createFoodElement(){
@@ -91,6 +88,16 @@ class SnakeGame {
 		this.food.style.width = configPackage.nodeLen+'px';
 		this.food.style.height = configPackage.nodeLen+'px';
 		this.food.id = 'food';
+	}
+
+	_dropFood(){
+		const foodCoords = this._getNewFoodCoordinates();
+
+		const top = foodCoords[0] * (1+configPackage.nodeLen);
+		this.food.style.top = top +'px';
+
+		const left = foodCoords[1] * (1+configPackage.nodeLen);
+		this.food.style.left = left+'px';
 	}
 
 	/**
@@ -106,6 +113,7 @@ class SnakeGame {
 	}
 
 	_getNewNode(row, col){
+		console.log('getNewNode: row: ' + row + '     col: ' + col);
 		const newNode = document.createElement('div');
 		newNode.className = 'node';
 		newNode.style.width = configPackage.nodeLen + 'px';
@@ -119,32 +127,27 @@ class SnakeGame {
 	}
 
 	_move(){
-		// console.log("snake will be moved ->");
-
 		const newHead = this._getNewHead();
 		if(this._moveIsWrong(newHead)){
-			console.log("___move was wrong!!!");
 			this._doWrongMoveWork();
 		} else {
-
 			this._doCorrectMoveWork(newHead);
 		}
-
 	}
 
 	_getNewHead(){
 		const dPair = this._getDiffPair();
-		// console.log("down: " + dPair[0] + "   right: " + dPair[1]);
 
 		const head = this.body[0];
 		let tail = this.body.pop();
-		// console.log(typeof(tail));
+
+		this.savedTailCoors = Object.assign([], [tail.offsetTop, tail.offsetLeft]);
+
 		let topOffset = head.offsetTop;
 		topOffset += dPair[0] == 0 ? 0 : dPair[0]*(configPackage.nodeLen+1);
 
 		let leftOffset = head.offsetLeft;
 		leftOffset += dPair[1] == 0 ? 0 : dPair[1]*(configPackage.nodeLen+1);
-		// console.log("yOff: " + yOffset);
 
 		tail.style.top = topOffset + 'px';
 		tail.style.left = leftOffset + 'px';
@@ -152,19 +155,18 @@ class SnakeGame {
 		return tail;
 	}
 
-	_getColumnOfElement(element){
-		const yOffset = element.offsetTop();
+	_getRowOfElement(element){
+		const yOffset = element.offsetTop;
+		console.log('yOffset: '+ yOffset);
 		return yOffset / (configPackage.nodeLen + 1);
 	}
 
-	_getRowOfElement(element){
-		const xOffset = element.offsetLeft();
+	_getColumnOfElement(element){
+		const xOffset = element.offsetLeft;
 		return xOffset / (configPackage.nodeLen + 1);
 	}
 
 	_moveIsWrong(newNode){
-		console.log("newNode.offsetTop: " + newNode.offsetTop);
-		console.log("this.heightInPxs : " + this.heightInPxs);
 		return newNode.offsetTop < 0
 			|| newNode.offsetTop >= this.heightInPxs
 			|| newNode.offsetLeft < 0
@@ -173,9 +175,7 @@ class SnakeGame {
 	}
 
 	_isBodyPart(newHead){
-		// console.log("nodeTop: " + node.offsetTop + '     nodeLeft: '+ node.offsetLeft);
 		for(let i in this.body){
-			console.log("i: "+i+ '	')
 			let node = this.body[i];
 			if(node.offsetLeft == newHead.offsetLeft
 				&& node.offsetTop == newHead.offsetTop)
@@ -192,21 +192,41 @@ class SnakeGame {
 			this._playNewGame();
 	}
 
+
+	
+	_tryToEat(newHead){
+		if(newHead.offsetLeft == this.food.offsetLeft
+			&& newHead.offsetTop == this.food.offsetTop){
+			this._eat(newHead);
+		}
+	}
+
 	_doCorrectMoveWork(newHead){
 		this.body.unshift(newHead);
+		// this.tryToEat(newHead);
+		if(newHead.offsetLeft == this.food.offsetLeft
+			&& newHead.offsetTop == this.food.offsetTop){
+			this._eat(newHead);
+		}
+	}
 
-		// this.body.map((elem) => {
-		// 	console.log(elem)
-		// });
+	_pxsToIndex(pxs){
+		return pxs / (configPackage.nodeLen+1);
+	}
 
-		// _displaySnake();
-		// console.log("body was moved");
+	_eat(newHead){
+		console.log("FOOOOOOD");
+		this._dropFood();
+
+		const row = this._pxsToIndex(this.savedTailCoors[0]);
+		const col = this._pxsToIndex(this.savedTailCoors[1]);
+		const addedNode = this._getNewNode(row, col);
+		this.body.push(addedNode);
 	}
 
 	_stopGame(){
 		clearInterval(this.interval);
 		this.gameIsOn = false;
-		// console.log("interval is over_____");
 	}
 
 	/**
