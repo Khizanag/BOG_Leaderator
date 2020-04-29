@@ -10,9 +10,9 @@ const config = {
     nodeLen: 20,
     numNodesInHeight: 25,
     numNodesInWidht: 25,
-    defaultInterval: 100,
+    defaultInterval: 1000,
     SCORE_STEP: 10,
-    numDefaultNodes: 5
+    numDefaultNodes: 10
 };
 
 export default config;

@@ -30,7 +30,7 @@ class SnakeGame {
 
 	_playNewGame(){
 		this.body = [];
-		for(let i = 0; i < configPackage.numDefaultNodes; i++){
+		for (let i = configPackage.numDefaultNodes-1; i >= 0; i--) {
 			const newNode = this._getNewNode(0, i);
 			this.body.push(newNode);
 		}
@@ -107,14 +107,15 @@ class SnakeGame {
 
 	_getNewHead(){
 		const dPair = this._getDiffPair();
-		console.log("down: " + dPair[0] + "   right: " + dPair[1]);
+		// console.log("down: " + dPair[0] + "   right: " + dPair[1]);
 
+		const head = this.body[0];
 		let tail = this.body.pop();
-		console.log(typeof(tail));
-		let topOffset = tail.offsetTop;
+		// console.log(typeof(tail));
+		let topOffset = head.offsetTop;
 		topOffset += dPair[0] == 0 ? 0 : configPackage.nodeLen+1;
 
-		let leftOffset = tail.offsetLeft;
+		let leftOffset = head.offsetLeft;
 		leftOffset += dPair[1] == 0 ? 0 : configPackage.nodeLen+1;
 		// console.log("yOff: " + yOffset);
 
@@ -153,9 +154,9 @@ class SnakeGame {
 	_doCorrectMoveWork(newHead){
 		this.body.unshift(newHead);
 
-		this.body.map((elem) => {
-			console.log(elem)
-		});
+		// this.body.map((elem) => {
+		// 	console.log(elem)
+		// });
 
 		// _displaySnake();
 		console.log("body was moved");
@@ -204,10 +205,10 @@ class SnakeGame {
 
 
 const game = new SnakeGame();
-// document.onkeydown = function (event) {
-// 	if (game.isGoodMoveKey(event.keyCode)) {
-// 		game.dirKey = event.keyCode;
-// 		console.log("Key was changed to: "+ event.keyCode);
-// 	}
-// }
+document.onkeydown = function (event) {
+	if (game.isGoodMoveKey(event.keyCode)) {
+		game.dirKey = event.keyCode;
+		console.log("Key was changed to: "+ event.keyCode);
+	}
+}
 game.play();
