@@ -23,11 +23,27 @@
     background-color: #375;
 }
 
-.canvas{
-    width: 500px;
-    height: 500px;
+#snake_canvas{
+    width: 520px;
+    height: 520px;
     display: block;
     /* margin: 5px auto; */
+    position: relative;
     border: 10px solid #657;
-    background: white;
+    background-color: white;
+}
+
+.node{
+    position: absolute;
+    background-color: blue;
+}
+
+#food{
+    display: block;
+    position: absolute;
+    background-color: red;
+}
+
+#snake_body{
+
 }

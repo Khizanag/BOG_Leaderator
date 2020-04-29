@@ -1,13 +1,13 @@
 import configPackage from "./config.js";
-import ScoreManager from "./ScoreManager.js";
+// import ScoreManager from "./ScoreManager.js";
 
-class Snake {
+class SnakeGame {
 
 	constructor(){
 		// this._initCanvas();
 		this.height = configPackage.numNodeInHeight;
 		this.width = configPackage.numNodesInWidht;
-		this.scoreManager = new ScoreManager();
+		// this.scoreManager = new ScoreManager();
 		this.gameIsOn = true;
 	}
 
@@ -29,28 +29,74 @@ class Snake {
 	}
 
 	_playNewGame(){
-		this.body = [
-			[0, 3],
-			[0, 2],
-			[0, 1],
-			[0, 0]
-		];
-		// this.play();
+		this.body = [];
+		for(let i = 0; i < configPackage.numDefaultNodes; i++){
+			const newNode = this._getNewNode(0, i);
+			this.body.push(newNode);
+		}
+
+		this._createAndDisplayFood();
+
 		this.dirKey = configPackage.rightKey;
 		// while(this.gameIsOn){
 			this.interval = setInterval(() => {
 				this._move()
 			}, configPackage.defaultInterval);
 
+
 			// this.gameIsOn = this._getRestartResponse();
 		// }
+	}
+
+	_createAndDisplayFood(){
+		let foodElem = document.createElement('div');
+		foodElem.style.width = configPackage.nodeLen+'px';
+		foodElem.style.height = configPackage.nodeLen+'px';
+		const foodCoords = this._getNewFoodCoordinates();
+		// console.log("foodCoords[0] " + foodCoords[0]);
+		const top = (foodCoords[0] + 1) * configPackage.nodeLen;
+		foodElem.style.top = top+'px';
+		// console.log("top: " + top);
+		// console.log("foodElem.style.top: " + foodElem.style.top);
+		const left = (foodCoords[1] + 1) * configPackage.nodeLen;
+		foodElem.style.left = left+'px';
+		// console.log("foodElem.style.left: " + foodElem.style.left);
+		foodElem.id = 'food';
+
+		snake_canvas.append(foodElem);
+
+		this.food = foodElem;
+	}
+
+
+	_getNewFoodCoordinates(){
+		let x, y;
+		do{
+			x = Math.floor(Math.random() * configPackage.numNodesInWidht);
+			y = Math.floor(Math.random() * configPackage.numNodesInHeight);
+		} while(this.body.includes([x,y]));
+		const result = [x, y];
+		return result;
+	}
+
+	_getNewNode(row, col){
+		const newNode = document.createElement('div');
+		newNode.className = 'node';
+		newNode.style.width = configPackage.nodeLen + 'px';
+		newNode.style.height = configPackage.nodeLen + 'px';
+		newNode.style.top = row * (1+configPackage.nodeLen) + 'px';
+		newNode.style.left = col * (1+configPackage.nodeLen) + 'px';
+
+		snake_body.append(newNode);
+
+		return newNode;
 	}
 
 	_move(){
 		console.log("snake will be moved ->");
 
 		const newHead = this._getNewHead();
-		this.body.pop();
+		// this.body.pop();
 		if(this._moveIsWrong(newHead)){
 			this._doWrongMoveWork();
 		} else {
@@ -60,12 +106,32 @@ class Snake {
 	}
 
 	_getNewHead(){
-		let newHead = Object.assign([], this.body[0]);
 		const dPair = this._getDiffPair();
 		console.log("down: " + dPair[0] + "   right: " + dPair[1]);
-		newHead[0] += dPair[0];
-		newHead[1] += dPair[1];
-		return newHead;
+
+		let tail = this.body.pop();
+		console.log(typeof(tail));
+		let topOffset = tail.offsetTop;
+		topOffset += dPair[0] == 0 ? 0 : configPackage.nodeLen+1;
+
+		let leftOffset = tail.offsetLeft;
+		leftOffset += dPair[1] == 0 ? 0 : configPackage.nodeLen+1;
+		// console.log("yOff: " + yOffset);
+
+		tail.style.top = topOffset + 'px';
+		tail.style.left = leftOffset + 'px';
+
+		return tail;
+	}
+
+	_getColumnOfElement(element){
+		const yOffset = element.offsetTop();
+		return yOffset / (configPackage.nodeLen + 1);
+	}
+
+	_getRowOfElement(element){
+		const xOffset = element.offsetLeft();
+		return xOffset / (configPackage.nodeLen + 1);
 	}
 
 	_moveIsWrong(newNode){
@@ -90,6 +156,8 @@ class Snake {
 		this.body.map((elem) => {
 			console.log(elem)
 		});
+
+		// _displaySnake();
 		console.log("body was moved");
 	}
 
@@ -134,13 +202,12 @@ class Snake {
 	}
 }
 
-// const snake = new Snake(configPackage.canvasWidth, configPackage.canvasHeight);
 
-const snake = new Snake();
-document.onkeydown = function (event) {
-	if (snake.isGoodMoveKey(event.keyCode)){
-		snake.dirKey = event.keyCode;
-		console.log("Key was changed to: "+ event.keyCode);
-	}
-}
-snake.play();
+const game = new SnakeGame();
+// document.onkeydown = function (event) {
+// 	if (game.isGoodMoveKey(event.keyCode)) {
+// 		game.dirKey = event.keyCode;
+// 		console.log("Key was changed to: "+ event.keyCode);
+// 	}
+// }
+game.play();
