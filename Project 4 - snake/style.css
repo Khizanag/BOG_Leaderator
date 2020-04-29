@@ -47,3 +47,26 @@
 #snake_body{
 
 }
+
+.buttons{
+    right: -100px;
+    top: 50%;
+    /* position: absolute; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+ 
+}
+
+.btn{
+    height: 40px;
+    width: 100px;
+    font-size: medium;
+    padding: 10px;
+    margin: 10px;
+    font-size: medium;
+    color: white;
+    background-color: #657;
+    border-style: none;
+}

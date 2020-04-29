@@ -9,7 +9,8 @@ class SnakeGame {
 		this.heightInPxs = this.height * (configPackage.nodeLen+1)-1;
 		this.widthInPxs  = this.width  * (configPackage.nodeLen+1)-1;
 		// this.scoreManager = new ScoreManager();
-		this.gameIsOn = true;
+		this.gameIsOn = false;
+		this.gameOver = false;
 	}
 
 	/**
@@ -30,7 +31,26 @@ class SnakeGame {
 	 * @uses _playNewGame
 	 */
 	play(){
-		this._playNewGame();
+		if(!this.gameIsOn)
+			this._playNewGame();
+	}
+
+	pause(){
+		if(this.gameIsOn){
+			this.gameIsOn = false;
+			clearInterval(this.interval);
+		}
+		
+	}
+
+	continue(){
+		if(!this.gameIsOn && !this.gameOver){
+			this.gameIsOn = true;
+			this.interval = setInterval(() => {
+				this._move()
+			}, configPackage.defaultInterval);
+			
+		}
 	}
 
 	/**
@@ -38,15 +58,16 @@ class SnakeGame {
 	 * Resets all values and runs whole game.
 	 */
 	_playNewGame(){
+		this.gameIsOn = true;
+		this.gameOver = false;
 		this._createBody();
 		this._createFood();
-
+	
 		this.dirKey = configPackage.rightKey;
-
+	
 		this.interval = setInterval(() => {
-			this._move()
+			this._move();
 		}, configPackage.defaultInterval);
-
 	}
 
 	/**
@@ -76,7 +97,7 @@ class SnakeGame {
 			isFirstGame = true;
 			this._createFoodElement();
 		}
-		
+		this.food.style.background = 'red';
 		this._dropFood();
 
 		if(isFirstGame)
@@ -90,6 +111,7 @@ class SnakeGame {
 		this.food.id = 'food';
 	}
 
+	
 	_dropFood(){
 		const foodCoords = this._getNewFoodCoordinates();
 
@@ -128,6 +150,7 @@ class SnakeGame {
 
 	_move(){
 		const newHead = this._getNewHead();
+
 		if(this._moveIsWrong(newHead)){
 			this._doWrongMoveWork();
 		} else {
@@ -137,7 +160,6 @@ class SnakeGame {
 
 	_getNewHead(){
 		const dPair = this._getDiffPair();
-
 		const head = this.body[0];
 		let tail = this.body.pop();
 
@@ -151,13 +173,11 @@ class SnakeGame {
 
 		tail.style.top = topOffset + 'px';
 		tail.style.left = leftOffset + 'px';
-
 		return tail;
 	}
 
 	_getRowOfElement(element){
 		const yOffset = element.offsetTop;
-		console.log('yOffset: '+ yOffset);
 		return yOffset / (configPackage.nodeLen + 1);
 	}
 
@@ -185,16 +205,28 @@ class SnakeGame {
 	}
 
 	_doWrongMoveWork(){
-		// console.log("move was wrong game is over");
-		this._stopGame();
-		this.gameIsOn = this._getRestartResponse();
-		if (this.gameIsOn)
-			this._playNewGame();
+		this.gameIsOn = false;
+		this.gameOver = true;
+		
+		// if(!this.gameIsOn) return;
+		clearInterval(this.interval);
+
+		snake_body.innerHTML = ''; // TODO
+		// this.food.style.overflow = "hidden";
+		// food.style.top = this.heightInPxs + 'px';
+		// food.style.left = this.widthInPxs + 'px';
+		this.food.style.background = 'transparent';
+		
+
+		alert(`You have chashed !
+		Your Score: 10
+		Max Score: 20`);
 	}
 
 
 	
 	_tryToEat(newHead){
+
 		if(newHead.offsetLeft == this.food.offsetLeft
 			&& newHead.offsetTop == this.food.offsetTop){
 			this._eat(newHead);
@@ -203,7 +235,6 @@ class SnakeGame {
 
 	_doCorrectMoveWork(newHead){
 		this.body.unshift(newHead);
-		// this.tryToEat(newHead);
 		if(newHead.offsetLeft == this.food.offsetLeft
 			&& newHead.offsetTop == this.food.offsetTop){
 			this._eat(newHead);
@@ -215,18 +246,11 @@ class SnakeGame {
 	}
 
 	_eat(newHead){
-		console.log("FOOOOOOD");
 		this._dropFood();
-
 		const row = this._pxsToIndex(this.savedTailCoors[0]);
 		const col = this._pxsToIndex(this.savedTailCoors[1]);
 		const addedNode = this._getNewNode(row, col);
 		this.body.push(addedNode);
-	}
-
-	_stopGame(){
-		clearInterval(this.interval);
-		this.gameIsOn = false;
 	}
 
 	/**
@@ -247,14 +271,6 @@ class SnakeGame {
 				return [];
 		}
 	}
-
-	/**
-	 * asks for user for new game and
-	 * @returns boolean wants user new game or not
-	 */
-	_getRestartResponse() {
-		return true; // TODO
-	}
 }
 
 
@@ -268,5 +284,18 @@ document.onkeydown = function (event) {
 	if (game.isGoodMoveKey(event.keyCode)) {
 		game.dirKey = event.keyCode;
 	}
+}
+
+restart_button.onclick = () => {
+	console.log("restart");
+	game.play();
+}
+
+pause_button.onclick = () => {
+	game.pause();
+}
+
+continue_button.onclick = () => {
+	game.continue();
 }
 game.play();
