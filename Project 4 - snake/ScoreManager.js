@@ -16,6 +16,10 @@ class ScoreManager{
 		return this.maxScore;
 	}
 
+	increaseScore(){
+		this.score += configPackage.SCORE_STEP;
+	}
+
 	tryMaxScoreUpdate() {
 		if (this.maxScore < this.score) {
 			this._updateMaxScore();

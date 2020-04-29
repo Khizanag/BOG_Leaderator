@@ -7,10 +7,11 @@ const config = {
     upKey: 38,
     rightKey: 39,
     downKey:40,
-    nodeLen: 5,
+    nodeLen: 4,
     numNodesInHeight: 100,
     numNodesInWidht: 100,
-    defaultInterval: 100
+    defaultInterval: 100,
+    SCORE_STEP: 10
 };
 
 export default config;

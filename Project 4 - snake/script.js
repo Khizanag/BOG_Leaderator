@@ -8,14 +8,6 @@ class Snake {
 		this.height = configPackage.numNodeInHeight;
 		this.width = configPackage.numNodesInWidht;
 		this.scoreManager = new ScoreManager();
-		this.body = [
-			[0, 3],
-			[0, 2],
-			[0, 1],
-			[0, 0]
-		];
-		// this.play();
-		this.dirKey = configPackage.rightKey;
 		this.gameIsOn = true;
 	}
 
@@ -33,36 +25,47 @@ class Snake {
 	// }
 
 	play(){
-		while(true){
+		this._playNewGame();
+	}
+
+	_playNewGame(){
+		this.body = [
+			[0, 3],
+			[0, 2],
+			[0, 1],
+			[0, 0]
+		];
+		// this.play();
+		this.dirKey = configPackage.rightKey;
+		// while(this.gameIsOn){
 			this.interval = setInterval(() => {
 				this._move()
 			}, configPackage.defaultInterval);
-		}
+
+			// this.gameIsOn = this._getRestartResponse();
+		// }
 	}
 
 	_move(){
 		console.log("snake will be moved ->");
-		let first = Object.assign([], this.body[0]);
-		const dPair = this._getDiffPair();
-		console.log("down: " + dPair[0] + "   right: " + dPair[1]);
-		this.body.pop();
-		first[0] += dPair[0];
-		first[1] += dPair[1];
 
-		if(this._moveIsWrong(first)){
-			console.log("move was wrong game is over");
-			this._stopGame();
+		const newHead = this._getNewHead();
+		this.body.pop();
+		if(this._moveIsWrong(newHead)){
+			this._doWrongMoveWork();
+		} else {
+			this._doCorrectMoveWork(newHead);
 		}
 
-		if(this.gameIsOn){
-			this.body.unshift(first);
+	}
 
-			this.body.map((elem) => {
-				console.log(elem)
-			});
-			console.log("body was moved");
-			// this._updateCanvas();
-		} // else this interval is over
+	_getNewHead(){
+		let newHead = Object.assign([], this.body[0]);
+		const dPair = this._getDiffPair();
+		console.log("down: " + dPair[0] + "   right: " + dPair[1]);
+		newHead[0] += dPair[0];
+		newHead[1] += dPair[1];
+		return newHead;
 	}
 
 	_moveIsWrong(newNode){
@@ -71,6 +74,23 @@ class Snake {
 			|| newNode[1] < 0
 			|| newNode[1] >= this.width
 			|| this.body.includes(newNode);
+	}
+
+	_doWrongMoveWork(){
+		console.log("move was wrong game is over");
+		this._stopGame();
+		this.gameIsOn = this._getRestartResponse();
+		if (this.gameIsOn)
+			this._playNewGame();
+	}
+
+	_doCorrectMoveWork(newHead){
+		this.body.unshift(newHead);
+
+		this.body.map((elem) => {
+			console.log(elem)
+		});
+		console.log("body was moved");
 	}
 
 	_stopGame(){
@@ -86,6 +106,11 @@ class Snake {
 		console.log("canvas was updated");
 	}
 
+	/**
+	 * @used for decomposition
+	 * @uses this.dirKey
+	 * @returns difference bewteen first and possible new node's coordinates
+	 */
 	_getDiffPair(){
 		switch (this.dirKey) {
 			case configPackage.leftKey	: return [0, -1];
@@ -99,8 +124,13 @@ class Snake {
 		}
 	}
 
-	_stop(){
-		console.log("game has stopped");
+	/**
+	 * asks for user for new game and
+	 * @returns boolean wants user new game or not
+	 */
+	_getRestartResponse() {
+		console.log("-------------------------------------------------------------------------------------");
+		return true; // TODO
 	}
 }
 
