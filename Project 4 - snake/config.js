@@ -1,6 +1,6 @@
 const config = {
-    canvasWidth: 520,
-    canvasHeight: 520,
+    canvasWidth: 524,
+    canvasHeight: 524,
     maxScoreKeyName: "$name_for_saving_max_score_in_local_storage$",
     defaultScore: 0,
     leftKey: 37,
@@ -9,10 +9,10 @@ const config = {
     downKey:40,
     nodeLen: 20,
     numNodesInHeight: 25,
-    numNodesInWidht: 25,
-    defaultInterval: 1000,
+    numNodesInWidth: 25,
+    defaultInterval: 300,
     SCORE_STEP: 10,
-    numDefaultNodes: 10
+    numDefaultNodes: 5
 };
 
 export default config;

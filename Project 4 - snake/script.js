@@ -4,73 +4,105 @@ import configPackage from "./config.js";
 class SnakeGame {
 
 	constructor(){
-		// this._initCanvas();
-		this.height = configPackage.numNodeInHeight;
-		this.width = configPackage.numNodesInWidht;
+		this.height = configPackage.numNodesInHeight;
+		this.width = configPackage.numNodesInWidth;
+		this.heightInPxs = this.height * (configPackage.nodeLen+1)-1;
+		this.widthInPxs  = this.width  * (configPackage.nodeLen+1)-1;
 		// this.scoreManager = new ScoreManager();
 		this.gameIsOn = true;
 	}
 
+	/**
+	 * Checks if pressed button was arrow or not.
+	 * @param key -> keyCode of pressed key
+	 * @returns true if pressed button was arrow and it is not
+	 * 				oppose of the current direction
+	 * 			otherwise returns false
+	 */
 	isGoodMoveKey(key){
-		console.log("isGood -> key: " + key);
 		return (key <= configPackage.downKey
 			&& key >= configPackage.leftKey
 			&& Math.abs(key - this.dirKey) != 2);
 	}
 
+	/**
+	 * Comportable function for user to call.
+	 * @uses _playNewGame
+	 */
 	play(){
 		this._playNewGame();
 	}
 
+	/**
+	 * Starts new game.
+	 * Resets all values and runs whole game.
+	 */
 	_playNewGame(){
-		this.body = [];
+		this._createBody();
+		this._createFood();
+
+		this.dirKey = configPackage.rightKey;
+
+		this.interval = setInterval(() => {
+			this._move()
+		}, configPackage.defaultInterval);
+
+	}
+
+	/**
+	 * Creates snake body numDefauldNodes nodes 
+	 */
+	_createBody(){
+		this._resetBody();
 		for (let i = configPackage.numDefaultNodes-1; i >= 0; i--) {
 			const newNode = this._getNewNode(0, i);
 			this.body.push(newNode);
 		}
-
-		this._createAndDisplayFood();
-
-		this.dirKey = configPackage.rightKey;
-		// while(this.gameIsOn){
-			this.interval = setInterval(() => {
-				this._move()
-			}, configPackage.defaultInterval);
-
-
-			// this.gameIsOn = this._getRestartResponse();
-		// }
 	}
 
-	_createAndDisplayFood(){
-		let foodElem = document.createElement('div');
-		foodElem.style.width = configPackage.nodeLen+'px';
-		foodElem.style.height = configPackage.nodeLen+'px';
+	/**
+	 * If this is not the first game and snake has already had body
+	 * this method deletes older nodes.
+	 * Otherwise just sets empty array to body
+	 */
+	_resetBody(){
+		this.body = [];
+		snake_body.innerHTML = '';
+	}
+
+	_createFood(){
+		if(this.food == undefined){
+			this._createFoodElement();
+		}
+		
 		const foodCoords = this._getNewFoodCoordinates();
-		// console.log("foodCoords[0] " + foodCoords[0]);
-		const top = (foodCoords[0] + 1) * configPackage.nodeLen;
-		foodElem.style.top = top+'px';
-		// console.log("top: " + top);
-		// console.log("foodElem.style.top: " + foodElem.style.top);
-		const left = (foodCoords[1] + 1) * configPackage.nodeLen;
-		foodElem.style.left = left+'px';
-		// console.log("foodElem.style.left: " + foodElem.style.left);
-		foodElem.id = 'food';
 
-		snake_canvas.append(foodElem);
+		const top = foodCoords[0] * (1+configPackage.nodeLen);
+		this.food.style.top = top +'px';
 
-		this.food = foodElem;
+		const left = foodCoords[1] * (1+configPackage.nodeLen);
+		this.food.style.left = left+'px';
+
+		snake_canvas.append(this.food);
 	}
 
+	_createFoodElement(){
+		this.food = document.createElement('div');
+		this.food.style.width = configPackage.nodeLen+'px';
+		this.food.style.height = configPackage.nodeLen+'px';
+		this.food.id = 'food';
+	}
 
+	/**
+	 * @returns array of two numbers, 0th corre
+	 */
 	_getNewFoodCoordinates(){
 		let x, y;
 		do{
-			x = Math.floor(Math.random() * configPackage.numNodesInWidht);
+			x = Math.floor(Math.random() * configPackage.numNodesInWidth);
 			y = Math.floor(Math.random() * configPackage.numNodesInHeight);
 		} while(this.body.includes([x,y]));
-		const result = [x, y];
-		return result;
+		return [y, x];
 	}
 
 	_getNewNode(row, col){
@@ -87,13 +119,14 @@ class SnakeGame {
 	}
 
 	_move(){
-		console.log("snake will be moved ->");
+		// console.log("snake will be moved ->");
 
 		const newHead = this._getNewHead();
-		// this.body.pop();
 		if(this._moveIsWrong(newHead)){
+			console.log("___move was wrong!!!");
 			this._doWrongMoveWork();
 		} else {
+
 			this._doCorrectMoveWork(newHead);
 		}
 
@@ -130,15 +163,29 @@ class SnakeGame {
 	}
 
 	_moveIsWrong(newNode){
-		return newNode[0] < 0
-			|| newNode[0] >= this.height
-			|| newNode[1] < 0
-			|| newNode[1] >= this.width
-			|| this.body.includes(newNode);
+		console.log("newNode.offsetTop: " + newNode.offsetTop);
+		console.log("this.heightInPxs : " + this.heightInPxs);
+		return newNode.offsetTop < 0
+			|| newNode.offsetTop >= this.heightInPxs
+			|| newNode.offsetLeft < 0
+			|| newNode.offsetLeft >= this.widthInPxs
+			|| this._isBodyPart(newNode);
+	}
+
+	_isBodyPart(newHead){
+		// console.log("nodeTop: " + node.offsetTop + '     nodeLeft: '+ node.offsetLeft);
+		for(let i in this.body){
+			console.log("i: "+i+ '	')
+			let node = this.body[i];
+			if(node.offsetLeft == newHead.offsetLeft
+				&& node.offsetTop == newHead.offsetTop)
+				return true;
+		}
+		return false;
 	}
 
 	_doWrongMoveWork(){
-		console.log("move was wrong game is over");
+		// console.log("move was wrong game is over");
 		this._stopGame();
 		this.gameIsOn = this._getRestartResponse();
 		if (this.gameIsOn)
@@ -153,20 +200,13 @@ class SnakeGame {
 		// });
 
 		// _displaySnake();
-		console.log("body was moved");
+		// console.log("body was moved");
 	}
 
 	_stopGame(){
 		clearInterval(this.interval);
 		this.gameIsOn = false;
-		console.log("interval is over_____");
-	}
-
-	_updateCanvas(){
-		console.log("canvas is going to be updated");
-
-
-		console.log("canvas was updated");
+		// console.log("interval is over_____");
 	}
 
 	/**
@@ -175,7 +215,7 @@ class SnakeGame {
 	 * @returns difference bewteen first and possible new node's coordinates
 	 */
 	_getDiffPair(){
-		console.log("%%%%%_____this.diKey: "+this.dirKey);
+		// console.log("%%%%%_____this.diKey: "+this.dirKey);
 		switch (this.dirKey) {
 			case configPackage.leftKey	: return [0, -1];
 			case configPackage.upKey 	: return [-1, 0];
@@ -184,7 +224,7 @@ class SnakeGame {
 
 			default :
 				console.log("Error occured in getDiffPair -> wrong direction");
-				return []; // TODO წესით არაა საჭირო
+				return [];
 		}
 	}
 
@@ -193,17 +233,20 @@ class SnakeGame {
 	 * @returns boolean wants user new game or not
 	 */
 	_getRestartResponse() {
-		console.log("-------------------------------------------------------------------------------------");
 		return true; // TODO
 	}
 }
 
 
+/**
+ * Runable part of the code. 
+ * Allows user to play 'Snake' game
+ */
+
 const game = new SnakeGame();
 document.onkeydown = function (event) {
 	if (game.isGoodMoveKey(event.keyCode)) {
 		game.dirKey = event.keyCode;
-		console.log("Key was changed to: "+ event.keyCode);
 	}
 }
 game.play();
