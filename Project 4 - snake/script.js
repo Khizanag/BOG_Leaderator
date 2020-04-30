@@ -1,5 +1,5 @@
 import configPackage from "./config.js";
-// import ScoreManager from "./ScoreManager.js";
+import ScoreManager from "./ScoreManager.js";
 
 class SnakeGame {
 
@@ -8,9 +8,7 @@ class SnakeGame {
 		this.width = configPackage.numNodesInWidth;
 		this.heightInPxs = this.height * (configPackage.nodeLen+1)-1;
 		this.widthInPxs  = this.width  * (configPackage.nodeLen+1)-1;
-		// this.scoreManager = new ScoreManager();
-		this.gameIsOn = false;
-		this.gameOver = false;
+		this.scoreManager = new ScoreManager();
 	}
 
 	/**
@@ -58,16 +56,22 @@ class SnakeGame {
 	 * Resets all values and runs whole game.
 	 */
 	_playNewGame(){
-		this.gameIsOn = true;
-		this.gameOver = false;
-		this._createBody();
-		this._createFood();
-	
-		this.dirKey = configPackage.rightKey;
+		this._initGame();
 	
 		this.interval = setInterval(() => {
 			this._move();
 		}, configPackage.defaultInterval);
+	}
+
+	_initGame(){
+		this.gameIsOn = true;
+		this.gameOver = false;
+		this._createBody();
+		this._createFood();
+		this.scoreManager.resetScore();
+		this._updateScore();
+		this.dirKey = configPackage.rightKey;
+		this.nextDirKey = this.dirKey;
 	}
 
 	/**
@@ -132,7 +136,7 @@ class SnakeGame {
 			y = Math.floor(Math.random() * configPackage.numNodesInHeight);
 		} while(this.body.includes([x,y]));
 		return [y, x];
-	}
+	} 	
 
 	_getNewNode(row, col){
 		console.log('getNewNode: row: ' + row + '     col: ' + col);
@@ -149,6 +153,9 @@ class SnakeGame {
 	}
 
 	_move(){
+		if( Math.abs(this.dirKey-this.nextDirKey) != -2){
+			this.dirKey = this.nextDirKey;
+		}
 		const newHead = this._getNewHead();
 
 		if(this._moveIsWrong(newHead)){
@@ -176,16 +183,6 @@ class SnakeGame {
 		return tail;
 	}
 
-	_getRowOfElement(element){
-		const yOffset = element.offsetTop;
-		return yOffset / (configPackage.nodeLen + 1);
-	}
-
-	_getColumnOfElement(element){
-		const xOffset = element.offsetLeft;
-		return xOffset / (configPackage.nodeLen + 1);
-	}
-
 	_moveIsWrong(newNode){
 		return newNode.offsetTop < 0
 			|| newNode.offsetTop >= this.heightInPxs
@@ -208,29 +205,12 @@ class SnakeGame {
 		this.gameIsOn = false;
 		this.gameOver = true;
 		
-		// if(!this.gameIsOn) return;
 		clearInterval(this.interval);
 
-		snake_body.innerHTML = ''; // TODO
-		// this.food.style.overflow = "hidden";
-		// food.style.top = this.heightInPxs + 'px';
-		// food.style.left = this.widthInPxs + 'px';
+		snake_body.innerHTML = '';
 		this.food.style.background = 'transparent';
 		
-
-		alert(`You have chashed !
-		Your Score: 10
-		Max Score: 20`);
-	}
-
-
-	
-	_tryToEat(newHead){
-
-		if(newHead.offsetLeft == this.food.offsetLeft
-			&& newHead.offsetTop == this.food.offsetTop){
-			this._eat(newHead);
-		}
+		alert(`Your snake is dead!\nYou have LOST!\n\nYour Score: ${this.scoreManager.getScore()}\nMax Score: ${this.scoreManager.getMaxScore()}\n\nTo restart game just press "Start" button`);
 	}
 
 	_doCorrectMoveWork(newHead){
@@ -246,11 +226,24 @@ class SnakeGame {
 	}
 
 	_eat(newHead){
-		this._dropFood();
+		
 		const row = this._pxsToIndex(this.savedTailCoors[0]);
 		const col = this._pxsToIndex(this.savedTailCoors[1]);
 		const addedNode = this._getNewNode(row, col);
 		this.body.push(addedNode);
+
+		this.scoreManager.increaseScore();
+
+		this._updateScore();
+
+		this._dropFood();
+	}
+
+	_updateScore(){
+		let scoreValue = this.scoreManager.getScore();
+		let maxScore = this.scoreManager.getMaxScore();
+		score.innerHTML = 'Score: ' + scoreValue;
+		max_score.innerHTML = 'Max Score: ' + maxScore;
 	}
 
 	/**
@@ -259,7 +252,6 @@ class SnakeGame {
 	 * @returns difference bewteen first and possible new node's coordinates
 	 */
 	_getDiffPair(){
-		// console.log("%%%%%_____this.diKey: "+this.dirKey);
 		switch (this.dirKey) {
 			case configPackage.leftKey	: return [0, -1];
 			case configPackage.upKey 	: return [-1, 0];
@@ -282,7 +274,7 @@ class SnakeGame {
 const game = new SnakeGame();
 document.onkeydown = function (event) {
 	if (game.isGoodMoveKey(event.keyCode)) {
-		game.dirKey = event.keyCode;
+		game.nextDirKey = event.keyCode;
 	}
 }
 

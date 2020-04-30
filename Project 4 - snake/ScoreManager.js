@@ -18,12 +18,17 @@ class ScoreManager{
 
 	increaseScore(){
 		this.score += configPackage.SCORE_STEP;
+		this.tryMaxScoreUpdate();
 	}
 
 	tryMaxScoreUpdate() {
 		if (this.maxScore < this.score) {
 			this._updateMaxScore();
 		}
+	}
+
+	resetScore(){
+		this.score = 0;
 	}
 
 	/************************* Below are private functions /*************************/
@@ -43,7 +48,8 @@ class ScoreManager{
 	}
 
 	_updateMaxScore(){
-
+		this.maxScore = this.score;
+		localStorage.setItem(configPackage.maxScoreKeyName, this.score);
 	}
 }
 
