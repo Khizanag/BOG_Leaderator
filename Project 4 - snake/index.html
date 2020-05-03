@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-	<meta name="viewpoint" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<meta name="viewpoint" content="width=device-width, initial-scale=1.0">
 	<title>Snake</title>
 
 	<link rel="stylesheet" href="style.css">
-	<!-- <link rel="stylesheet" href="resolution.css"> -->
+	<link rel="stylesheet" href="resolution.css">
 </head>
 
 <body>
@@ -19,12 +19,14 @@
 					<!-- This part is filled by script.js after game starts-->
 				</div>
 
+				<!-- Current and history max scores -->
 				<div class="scores">
 					<div id="score" class="score"></div>
 					<div id="max_score" class="score"></div>
 				</div>
 			</div>
 
+			<!-- Buttons are on the left side of the board -->
 			<div class="buttons">
 				<input type="button" value="Start" class="btn" id="restart_button">
 				<input type="button" value="Pause" class="btn" id="pause_button">
@@ -34,5 +36,5 @@
 	</section>
 
 </body>
-<script type="module" src="./script.js"></script>
+<script type="module" src="./js/script.js"></script>
 </html>

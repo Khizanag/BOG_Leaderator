@@ -1,0 +1,8 @@
+@media all and (max-width:360px){
+    
+    .scores{
+        display: flex;
+        flex-direction: column;
+    }
+
+}
