@@ -35,26 +35,37 @@ namespace ExercisesConsole
                 Console.WriteLine($"FirstName {it.Name }, LastName {it.LastName}");
             }
 
-            //var purchases = new List<Purchase>()
-            //{
-            //    new Purchase("Carrots", 12,1),
-            //    new Purchase("Cauliflower", 2,1),
-            //    new Purchase("Cauliflower", 2,1),
-            //    new Purchase("Apples", 2,3),
-            //    new Purchase("Apples", 7,1),
-            //    new Purchase("Avocados", 2,4),
-            //    new Purchase("Avocados", 2,1),
-            //    new Purchase("Avocados", 3,1),
-            //    new Purchase("Avocados", 2,4),
-            //    new Purchase("Avocados", 7,1),
-            //    new Purchase("Avocados", 2,1)
-            //};
+            var purchases = new List<Purchase>()
+            {
+                new Purchase("Carrots", 12,1),
+                new Purchase("Cauliflower", 2,1),
+                new Purchase("Cauliflower", 2,1),
+                new Purchase("Apples", 2,3),
+                new Purchase("Apples", 7,1),
+                new Purchase("Avocados", 2,4),
+                new Purchase("Avocados", 2,1),
+                new Purchase("Avocados", 3,1),
+                new Purchase("Avocados", 2,4),
+                new Purchase("Avocados", 7,1),
+                new Purchase("Avocados", 2,1)
+            };
 
             //writeline person list
+            foreach(var person in people)
+            {
+                Console.WriteLine(person.ToString());
+            }
 
             //write linq statement for people with last name that starts with the letter D, writeline id of them
+            var FilteredByLastName = from person in people
+                                     where person.LastName[0] == '0'
+                                     select person;
 
             //Write linq statement for first Person Older Than 50 In Descending Alphabetical  Order by First Name
+            var FirstOverFifty = (from person in people
+                                 where person.Age > 50
+                                 orderby person.FirstName descending
+                                 select new { person }).Take(1);
 
             //Write person ages that is "dublicate"
 
