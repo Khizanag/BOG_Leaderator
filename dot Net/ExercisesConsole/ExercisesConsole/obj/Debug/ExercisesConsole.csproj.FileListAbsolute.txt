@@ -1,0 +1,13 @@
+C:/Users/nchakvetadze/source/repos/ExercisesConsole/ExercisesConsole/bin/Debug/ExercisesConsole.exe.config
+C:/Users/nchakvetadze/source/repos/ExercisesConsole/ExercisesConsole/bin/Debug/ExercisesConsole.exe
+C:/Users/nchakvetadze/source/repos/ExercisesConsole/ExercisesConsole/bin/Debug/ExercisesConsole.pdb
+C:/Users/nchakvetadze/source/repos/ExercisesConsole/ExercisesConsole/obj/Debug/ExercisesConsole.csprojAssemblyReference.cache
+C:/Users/nchakvetadze/source/repos/ExercisesConsole/ExercisesConsole/obj/Debug/ExercisesConsole.csproj.CoreCompileInputs.cache
+C:/Users/nchakvetadze/source/repos/ExercisesConsole/ExercisesConsole/obj/Debug/ExercisesConsole.exe
+C:/Users/nchakvetadze/source/repos/ExercisesConsole/ExercisesConsole/obj/Debug/ExercisesConsole.pdb
+/Users/gigakhizanishvili/Programming/GitHub/BOG_Leaderator/dot Net/ExercisesConsole/ExercisesConsole/bin/Debug/ExercisesConsole.exe.config
+/Users/gigakhizanishvili/Programming/GitHub/BOG_Leaderator/dot Net/ExercisesConsole/ExercisesConsole/bin/Debug/ExercisesConsole.exe
+/Users/gigakhizanishvili/Programming/GitHub/BOG_Leaderator/dot Net/ExercisesConsole/ExercisesConsole/bin/Debug/ExercisesConsole.pdb
+/Users/gigakhizanishvili/Programming/GitHub/BOG_Leaderator/dot Net/ExercisesConsole/ExercisesConsole/obj/Debug/ExercisesConsole.csprojAssemblyReference.cache
+/Users/gigakhizanishvili/Programming/GitHub/BOG_Leaderator/dot Net/ExercisesConsole/ExercisesConsole/obj/Debug/ExercisesConsole.exe
+/Users/gigakhizanishvili/Programming/GitHub/BOG_Leaderator/dot Net/ExercisesConsole/ExercisesConsole/obj/Debug/ExercisesConsole.pdb
