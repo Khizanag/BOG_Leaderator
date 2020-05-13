@@ -68,7 +68,10 @@ namespace ExercisesConsole
                                  select new { person }).Take(1);
 
             //Write person ages that is "dublicate"
-
+            var DuplicatedAges = from person in people
+                                 group person by person.Age into AgeGroup
+                                 where AgeGroup.Count() > 1
+                                 select new { AgeGroup.Key, Count = AgeGroup.Count() };
 
 
             Console.ReadLine();
